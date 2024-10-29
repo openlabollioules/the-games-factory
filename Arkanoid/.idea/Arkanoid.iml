@@ -4,5 +4,10 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="FlappyBird" />
+    <orderEntry type="module" module-name="Mario" />
+    <orderEntry type="module" module-name="Snake" />
+    <orderEntry type="module" module-name="Splatoon-mini" />
+    <orderEntry type="module" module-name="Tetris" />
   </component>
 </module>

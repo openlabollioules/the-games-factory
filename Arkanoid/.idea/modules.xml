@@ -3,6 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Arkanoid.iml" filepath="$PROJECT_DIR$/.idea/Arkanoid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../FlappyBird/.idea/FlappyBird.iml" filepath="$PROJECT_DIR$/../FlappyBird/.idea/FlappyBird.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Mario/.idea/Mario.iml" filepath="$PROJECT_DIR$/../Mario/.idea/Mario.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Snake/.idea/Snake.iml" filepath="$PROJECT_DIR$/../Snake/.idea/Snake.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Splatoon-mini/.idea/Splatoon-mini.iml" filepath="$PROJECT_DIR$/../Splatoon-mini/.idea/Splatoon-mini.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Tetris/.idea/Tetris.iml" filepath="$PROJECT_DIR$/../Tetris/.idea/Tetris.iml" />
     </modules>
   </component>
 </project>
