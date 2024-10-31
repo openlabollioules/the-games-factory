@@ -10,6 +10,7 @@ https://chatgpt.com/share/67210523-5038-8010-818f-b804be5954e7
 ## Flappy Bird
 Link to ChatGPT 4o with canvas chat
 https://chatgpt.com/share/6721054a-5410-8010-a017-84826862b334
+React version does nos work. Python version does.
 
 ## Mario (not working)
 Link to ChatGPT 4o with canvas chat
@@ -26,3 +27,4 @@ https://chatgpt.com/share/671e8389-de8c-8010-a080-e30f8378620d
 ## Tetris
 Link to ChatGPT 4o with canvas chat
 https://chatgpt.com/share/671e83cb-a460-8010-a630-9c5b28708d2f
+React version does nos work. Python version does.
