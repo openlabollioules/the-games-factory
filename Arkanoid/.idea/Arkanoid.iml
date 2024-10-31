@@ -9,5 +9,6 @@
     <orderEntry type="module" module-name="Snake" />
     <orderEntry type="module" module-name="Splatoon-mini" />
     <orderEntry type="module" module-name="Tetris" />
+    <orderEntry type="module" module-name="the-games-factory" />
   </component>
 </module>
