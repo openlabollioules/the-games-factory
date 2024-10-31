@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bec2f342-d56f-4e8f-967d-ff5a404cb13a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../.idea/the-games-factory.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TheGames Factory.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Arkanoid.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Arkanoid.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="bec2f342-d56f-4e8f-967d-ff5a404cb13a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

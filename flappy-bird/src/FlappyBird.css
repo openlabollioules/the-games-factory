@@ -1,0 +1,40 @@
+.flappy-bird {
+    position: relative;
+    background: url('/public/background.png') no-repeat center center;
+    background-size: cover;
+    overflow: hidden;
+  }
+  
+  .bird {
+    position: absolute;
+    background: url('/public/bird.png') no-repeat center center;
+    background-size: cover;
+  }
+  
+  .bird-dead {
+    filter: grayscale(100%);
+  }
+  
+  .pipe {
+    position: absolute;
+    width: 80px;
+    background: url('/public/pipe.png') no-repeat center center;
+    background-size: cover;
+  }
+  
+  .pipe-bottom {
+    transform: rotate(180deg);
+  }
+  
+  .game-over {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    color: red;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
