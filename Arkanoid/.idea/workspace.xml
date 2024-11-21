@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bec2f342-d56f-4e8f-967d-ff5a404cb13a" name="Changes" comment="" />
+    <list default="true" id="bec2f342-d56f-4e8f-967d-ff5a404cb13a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Arkanoid.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Arkanoid.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,19 +38,22 @@
     "Python.Arkanoid.executor": "Run",
     "Python.FlappyBird.executor": "Run",
     "Python.TheGames Factory.executor": "Run",
+    "Python.TripPlannerAgent.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/raguets/DEV/the-games-factory"
+    "last_opened_file_path": "/Users/raguets/DEV/TripPlanner",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/../../TripPlanner" />
       <recent name="$PROJECT_DIR$/.." />
       <recent name="$PROJECT_DIR$/../FlappyBird" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.TheGames Factory">
+  <component name="RunManager" selected="Python.Arkanoid">
     <configuration name="Arkanoid" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Arkanoid" />
       <option name="ENV_FILES" value="" />

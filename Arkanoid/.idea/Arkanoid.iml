@@ -10,5 +10,6 @@
     <orderEntry type="module" module-name="Splatoon-mini" />
     <orderEntry type="module" module-name="Tetris" />
     <orderEntry type="module" module-name="the-games-factory" />
+    <orderEntry type="module" module-name="TripPlanner" />
   </component>
 </module>
