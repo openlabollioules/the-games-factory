@@ -36,7 +36,7 @@ ship_image = pygame.image.load("ship.jpg")
 ship_image = pygame.transform.scale(ship_image, (player_size, player_size))
 
 # Charger l'image de la porte
-portal_image = pygame.image.load("porte-magique.png")
+portal_image = pygame.image.load("portal.png")
 portal_image = pygame.transform.scale(portal_image, (50, 50))
 
 # Variables des obstacles
