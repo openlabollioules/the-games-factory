@@ -28,7 +28,7 @@ background_rocket = pygame.transform.scale(background_rocket, (SCREEN_WIDTH, SCR
 background = background_square
 
 # Chargement des images du portail et de la fusée
-portal_image = pygame.image.load("portai l.png")
+portal_image = pygame.image.load("portail.png")
 portal_image = pygame.transform.scale(portal_image, (40, 40))
 
 rocket_image = pygame.image.load("fusee.png")
