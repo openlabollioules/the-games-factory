@@ -24,8 +24,12 @@ clock = pygame.time.Clock()
 bg_image = pygame.image.load("background.jpg")
 bg_image = pygame.transform.scale(bg_image, (WIDTH, HEIGHT))
 
-player_image = pygame.image.load("player.png")
-player_image = pygame.transform.scale(player_image, (50, 50))
+player_skins = [
+    pygame.image.load("player_skin1.png"),
+    pygame.image.load("player_skin2.webp"),
+    pygame.image.load("player_skin3.webp")
+]
+player_skins = [pygame.transform.scale(skin, (50, 50)) for skin in player_skins]
 
 bot_image = pygame.image.load("bot.png")
 bot_image = pygame.transform.scale(bot_image, (50, 50))
@@ -36,9 +40,9 @@ pygame.mixer.music.play(-1)
 
 # Classes
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, skin):
         super().__init__()
-        self.image = player_image
+        self.image = skin
         self.rect = self.image.get_rect(center=(WIDTH // 2, HEIGHT // 2))
         self.health = 5000
         self.speed = 5
@@ -66,8 +70,14 @@ class Player(pygame.sprite.Sprite):
         bar_width = 50
         bar_height = 5
         health_ratio = self.health / 5000
+
+        # Barre rouge pour la santé perdue
         pygame.draw.rect(surface, RED, (self.rect.x, self.rect.y - 10, bar_width, bar_height))
+        # Barre verte pour la santé restante
         pygame.draw.rect(surface, GREEN, (self.rect.x, self.rect.y - 10, bar_width * health_ratio, bar_height))
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect.topleft)
 
 class Bot(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -121,8 +131,14 @@ class Bot(pygame.sprite.Sprite):
         bar_width = 50
         bar_height = 5
         health_ratio = self.health / 5000
+
+        # Barre rouge pour la santé perdue
         pygame.draw.rect(surface, RED, (self.rect.x, self.rect.y - 10, bar_width, bar_height))
+        # Barre verte pour la santé restante
         pygame.draw.rect(surface, GREEN, (self.rect.x, self.rect.y - 10, bar_width * health_ratio, bar_height))
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect.topleft)
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, speed):
@@ -139,10 +155,10 @@ class Bullet(pygame.sprite.Sprite):
 
 # Fonctions
 def draw_poison_zone(surface, rect):
-    # Dessiner les contours de la zone de poison
     pygame.draw.rect(surface, POISON_COLOR, rect, 10)
 
 def main_menu():
+    selected_skin = 0
     while True:
         screen.fill(BLACK)
         font = pygame.font.Font(None, 74)
@@ -152,9 +168,14 @@ def main_menu():
         font = pygame.font.Font(None, 36)
         play_text = font.render("Press Enter to Play", True, WHITE)
         quit_text = font.render("Press Escape to Quit", True, WHITE)
+        skin_text = font.render("Use Left/Right to Change Skin", True, WHITE)
 
         screen.blit(play_text, (WIDTH // 2 - play_text.get_width() // 2, HEIGHT // 2))
         screen.blit(quit_text, (WIDTH // 2 - quit_text.get_width() // 2, HEIGHT // 2 + 50))
+        screen.blit(skin_text, (WIDTH // 2 - skin_text.get_width() // 2, HEIGHT // 2 + 100))
+
+        # Afficher le skin sélectionné
+        screen.blit(player_skins[selected_skin], (WIDTH // 2 - 25, HEIGHT // 2 - 100))
 
         pygame.display.flip()
 
@@ -164,13 +185,17 @@ def main_menu():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    return
+                    return selected_skin
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
+                if event.key == pygame.K_LEFT:
+                    selected_skin = (selected_skin - 1) % len(player_skins)
+                if event.key == pygame.K_RIGHT:
+                    selected_skin = (selected_skin + 1) % len(player_skins)
 
-def game():
-    player = Player()
+def game(selected_skin):
+    player = Player(player_skins[selected_skin])
     bots = pygame.sprite.Group()
     bullets = pygame.sprite.Group()
     bot_bullets = pygame.sprite.Group()
@@ -262,7 +287,9 @@ def game():
 
         # Affichage
         screen.blit(bg_image, (0, 0))
-        all_sprites.draw(screen)
+        player.draw(screen)
+        for bot in bots:
+            bot.draw(screen)
 
         # Dessiner la zone de poison
         draw_poison_zone(screen, poison_rect)
@@ -271,6 +298,10 @@ def game():
         player.draw_health_bar(screen)
         for bot in bots:
             bot.draw_health_bar(screen)
+
+        # Afficher les tirs
+        bullets.draw(screen)
+        bot_bullets.draw(screen)
 
         # Afficher le nombre d'éliminations
         font = pygame.font.Font(None, 36)
@@ -282,8 +313,8 @@ def game():
 
 def main():
     while True:
-        main_menu()
-        result = game()
+        selected_skin = main_menu()
+        result = game(selected_skin)
 
         # Afficher le résultat de la partie
         screen.fill(BLACK)
