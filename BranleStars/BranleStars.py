@@ -1,6 +1,7 @@
 import pygame
 import sys
 import random
+import time
 
 # Initialiser Pygame
 pygame.init()
@@ -12,6 +13,7 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+POISON_COLOR = (0, 255, 0)  # Vert fluo
 
 # Créer la fenêtre du jeu
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -40,6 +42,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(WIDTH // 2, HEIGHT // 2))
         self.health = 5000
         self.speed = 5
+        self.last_damage_time = 0
 
     def update(self, keys):
         if keys[pygame.K_LEFT]:
@@ -54,6 +57,11 @@ class Player(pygame.sprite.Sprite):
         # Empêcher le joueur de sortir de l'écran
         self.rect.clamp_ip(screen.get_rect())
 
+    def regenerate_health(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_damage_time > 3000:  # 3 secondes après avoir subi des dégâts
+            self.health = min(self.health + 200, 5000)  # Régénérer jusqu'à 5000 max
+
     def draw_health_bar(self, surface):
         bar_width = 50
         bar_height = 5
@@ -67,21 +75,44 @@ class Bot(pygame.sprite.Sprite):
         self.image = bot_image
         self.rect = self.image.get_rect(center=(x, y))
         self.health = 5000
-        self.speed = random.choice([-2, 2])
-        self.direction = random.choice(["horizontal", "vertical"])
+        self.speed = 2
+        self.last_direction_change = pygame.time.get_ticks()
+        self.last_damage_time = 0
+        self.direction = pygame.math.Vector2(random.choice([-1, 1]), random.choice([-1, 1])).normalize()
 
-    def update(self):
+    def update(self, poison_rect):
         if self.health <= 0:
             self.kill()
         else:
-            if self.direction == "horizontal":
-                self.rect.x += self.speed
-                if self.rect.left < 0 or self.rect.right > WIDTH:
-                    self.speed = -self.speed
-            elif self.direction == "vertical":
-                self.rect.y += self.speed
-                if self.rect.top < 0 or self.rect.bottom > HEIGHT:
-                    self.speed = -self.speed
+            # Vérifier si le bot est proche de la zone de poison
+            if not poison_rect.contains(self.rect):
+                # Se déplacer dans une direction éloignant de la zone de poison
+                if self.rect.left < poison_rect.left:
+                    self.direction.x = 1
+                elif self.rect.right > poison_rect.right:
+                    self.direction.x = -1
+                if self.rect.top < poison_rect.top:
+                    self.direction.y = 1
+                elif self.rect.bottom > poison_rect.bottom:
+                    self.direction.y = -1
+
+            # Modifier la direction aléatoirement toutes les 1,5 secondes
+            current_time = pygame.time.get_ticks()
+            if current_time - self.last_direction_change > 1500:
+                self.direction = pygame.math.Vector2(random.choice([-1, 1]), random.choice([-1, 1])).normalize()
+                self.last_direction_change = current_time
+
+            # Appliquer la direction actuelle
+            self.rect.x += int(self.direction.x * self.speed)
+            self.rect.y += int(self.direction.y * self.speed)
+
+            # Empêcher le bot de sortir de l'écran
+            self.rect.clamp_ip(screen.get_rect())
+
+    def regenerate_health(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_damage_time > 3000:  # 3 secondes après avoir subi des dégâts
+            self.health = min(self.health + 200, 5000)  # Régénérer jusqu'à 5000 max
 
     def shoot(self):
         return Bullet(self.rect.centerx, self.rect.centery, -10)
@@ -107,6 +138,9 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 # Fonctions
+def draw_poison_zone(surface, rect):
+    # Dessiner les contours de la zone de poison
+    pygame.draw.rect(surface, POISON_COLOR, rect, 10)
 
 def main_menu():
     while True:
@@ -150,6 +184,11 @@ def game():
 
     eliminations = 0
 
+    # Zone de poison initiale
+    poison_rect = pygame.Rect(0, 0, WIDTH, HEIGHT)
+    poison_shrink_timer = pygame.time.get_ticks()
+    poison_shrink_interval = 3000  # 3 secondes
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -167,27 +206,53 @@ def game():
         player.update(keys)
 
         # Mise à jour des sprites
-        bots.update()
+        for bot in bots:
+            bot.update(poison_rect)
+            bot.regenerate_health()
+
         bullets.update()
         bot_bullets.update()
 
-        # Les bots tirent
+        # Les bots tirent sur le joueur
         for bot in bots:
             if random.randint(1, 100) == 1:  # Probabilité de tir
                 bot_bullet = bot.shoot()
                 bot_bullets.add(bot_bullet)
                 all_sprites.add(bot_bullet)
 
+        # Réduire la zone de poison toutes les 3 secondes
+        current_time = pygame.time.get_ticks()
+        if current_time - poison_shrink_timer > poison_shrink_interval:
+            if poison_rect.width > 50 and poison_rect.height > 50:  # Ne pas rétrécir indéfiniment
+                poison_rect.inflate_ip(-10, -10)  # Rétrécit vers le centre
+            poison_shrink_timer = current_time
+
+        # Appliquer les dégâts de poison
+        if not poison_rect.contains(player.rect):
+            player.health -= 500
+            player.last_damage_time = pygame.time.get_ticks()
+        for bot in bots:
+            if not poison_rect.contains(bot.rect):
+                bot.health -= 500
+                bot.last_damage_time = pygame.time.get_ticks()
+
+        # Régénération de santé
+        player.regenerate_health()
+
         # Collision des balles avec les bots
         for bullet in bullets:
             hits = pygame.sprite.spritecollide(bullet, bots, False)
             for hit in hits:
                 hit.health -= 1000
+                hit.last_damage_time = pygame.time.get_ticks()
                 bullet.kill()
+                if hit.health <= 0:
+                    eliminations += 1
 
         # Collision des balles des bots avec le joueur
         if pygame.sprite.spritecollide(player, bot_bullets, True):
             player.health -= 1000
+            player.last_damage_time = pygame.time.get_ticks()
 
         # Fin de partie
         if player.health <= 0:
@@ -198,6 +263,9 @@ def game():
         # Affichage
         screen.blit(bg_image, (0, 0))
         all_sprites.draw(screen)
+
+        # Dessiner la zone de poison
+        draw_poison_zone(screen, poison_rect)
 
         # Dessiner les barres de santé
         player.draw_health_bar(screen)
