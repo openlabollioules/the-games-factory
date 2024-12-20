@@ -76,6 +76,11 @@ class Player(pygame.sprite.Sprite):
         # Barre verte pour la santé restante
         pygame.draw.rect(surface, GREEN, (self.rect.x, self.rect.y - 10, bar_width * health_ratio, bar_height))
 
+        # Afficher le nombre de PV
+        font = pygame.font.Font(None, 18)
+        health_text = font.render(f"{self.health}", True, BLACK)
+        surface.blit(health_text, (self.rect.x, self.rect.y - 20))
+
     def draw(self, surface):
         surface.blit(self.image, self.rect.topleft)
 
@@ -136,6 +141,11 @@ class Bot(pygame.sprite.Sprite):
         pygame.draw.rect(surface, RED, (self.rect.x, self.rect.y - 10, bar_width, bar_height))
         # Barre verte pour la santé restante
         pygame.draw.rect(surface, GREEN, (self.rect.x, self.rect.y - 10, bar_width * health_ratio, bar_height))
+
+        # Afficher le nombre de PV
+        font = pygame.font.Font(None, 18)
+        health_text = font.render(f"{self.health}", True, BLACK)
+        surface.blit(health_text, (self.rect.x, self.rect.y - 20))
 
     def draw(self, surface):
         surface.blit(self.image, self.rect.topleft)
